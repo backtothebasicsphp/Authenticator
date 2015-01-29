@@ -1,0 +1,10 @@
+{
+    "require": {
+        "pimple/pimple": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Basic\\Login\\": "src/Basic/Login"
+        }
+    }
+}
