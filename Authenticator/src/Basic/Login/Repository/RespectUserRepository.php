@@ -3,23 +3,22 @@
 namespace Basic\Login\Repository;
 
 use Basic\Login\Entity\User;
-use PHPFluent\ArrayStorage\Record;
-use PHPFluent\ArrayStorage\Storage;
+use Respect\Relational\Mapper;
 
-class ArrayUserRepository implements UserRepository
+class RespectUserRepository implements UserRepository
 {
-    private $users;
+    private $mapper;
 
-    public function __construct(Storage $storage)
+    public function __construct(Mapper $mapper)
     {
-        $this->users = $storage->users;
+        $this->mapper = $mapper;
     }
 
     public function findByUsername($username)
     {
-        $record = $this->users->find(array('username' => $username));
+        $record = $this->mapper->users(["username" => $username])->fetch();
 
-        if (!$record instanceof Record) {
+        if ($record->username !== $username) {
             return false;
         }
 

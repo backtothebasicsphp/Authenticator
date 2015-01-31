@@ -1,6 +1,9 @@
 {
     "require": {
-        "pimple/pimple": "dev-master"
+        "pimple/pimple": "dev-master",
+        "phpfluent/arraystorage": "~1.4",
+        "respect/relational": "0.6.*",
+        "league/csv": "~6.3"
     },
     "autoload": {
         "psr-4": {

@@ -2,17 +2,34 @@
 
 namespace Basic\Login\Repository;
 
+use Basic\Login\Entity\User;
+
 class PDOUserRepository implements UserRepository
 {
-    private $connection;
+    private $db;
 
-    public function __construct(\PDO $connection)
+    public function __construct(\PDO $db)
     {
-        $this->connection = $connection;
+        $this->db = $db;
     }
 
     public function findByUsername($username)
     {
-        // TODO: Implement findByUsername() method.
+        $stmt = $this->db->prepare("SELECT * FROM users WHERE username = :username");
+        $stmt->bindParam(":username", $username);
+        $stmt->execute();
+
+        $record = $stmt->fetch();
+
+        if ($record["username"] !== $username) {
+            return false;
+        }
+
+        $user = new User();
+        $user->setId($record["id"]);
+        $user->setUsername($record["username"]);
+        $user->setPassword($record["password"]);
+
+        return $user;
     }
 }
