@@ -2,7 +2,7 @@
     "require": {
         "pimple/pimple": "dev-master",
         "phpfluent/arraystorage": "~1.4",
-        "respect/relational": "0.6.*",
+        "respect/relational": "dev-master",
         "league/csv": "~6.3"
     },
     "autoload": {

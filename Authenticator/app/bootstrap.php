@@ -24,20 +24,23 @@ $container["array_storage"] = function($c) {
     return $storage;
 };
 
-$container["sqlite_storage"] = function ($c) {
+$container["sqlite_storage"] = function ($c) use ($argv) {
+    $argvFile = strrchr($argv[0], '/');
+    $tableName = $argvFile == '/respect_authenticator.php' ? 'user' : 'users';
+
     $db = new \PDO('sqlite::memory:');
     $db->exec("
-        CREATE TABLE users (
+        CREATE TABLE {$tableName} (
             id INTEGER PRIMARY KEY,
             username TEXT,
             password TEXT
         )
     ");
 
-    $insert = '
-        INSERT INTO users (username, password)
-        VALUES (\'john.doe\', \'$2y$10$R8E3yIfyjBrTXwq/c8F54e..sUHIx2THoZhvEg45ddC58eA2LnE46\')
-    ';
+    $insert = "
+        INSERT INTO {$tableName} (username, password)
+        VALUES ('john.doe', '$2y$10\$R8E3yIfyjBrTXwq/c8F54e..sUHIx2THoZhvEg45ddC58eA2LnE46')
+    ";
 
     $stmt = $db->prepare($insert);
     $stmt->execute();

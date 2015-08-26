@@ -23,10 +23,7 @@ class ArrayUserRepository implements UserRepository
             return false;
         }
 
-        $user = new User();
-        $user->setId($record->id);
-        $user->setUsername($record->username);
-        $user->setPassword($record->password);
+        $user = new User($record->username, $record->password, $record->id);
 
         return $user;
     }

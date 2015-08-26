@@ -12,21 +12,18 @@ class RespectUserRepository implements UserRepository
     public function __construct(Mapper $mapper)
     {
         $this->mapper = $mapper;
+        $this->mapper->disableEntityConstructor = true;
+        $this->mapper->entityNamespace = '\\Basic\\Login\\Entity\\';
     }
 
     public function findByUsername($username)
     {
-        $record = $this->mapper->users(["username" => $username])->fetch();
+        $record = $this->mapper->user(["username" => $username])->fetch();
 
-        if ($record->username !== $username) {
+        if ($record->getUsername() !== $username) {
             return false;
         }
 
-        $user = new User();
-        $user->setId($record->id);
-        $user->setUsername($record->username);
-        $user->setPassword($record->password);
-
-        return $user;
+        return $record;
     }
 }
