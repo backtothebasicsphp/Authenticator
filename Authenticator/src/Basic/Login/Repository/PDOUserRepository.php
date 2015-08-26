@@ -3,12 +3,13 @@
 namespace Basic\Login\Repository;
 
 use Basic\Login\Entity\User;
+use \Pdo;
 
 class PDOUserRepository implements UserRepository
 {
     private $db;
 
-    public function __construct(\PDO $db)
+    public function __construct(Pdo $db)
     {
         $this->db = $db;
     }
@@ -17,19 +18,15 @@ class PDOUserRepository implements UserRepository
     {
         $stmt = $this->db->prepare("SELECT * FROM users WHERE username = :username");
         $stmt->bindParam(":username", $username);
+        $stmt->setFetchMode(Pdo::FETCH_CLASS|Pdo::FETCH_PROPS_LATE, '\\Basic\\Login\\Entity\\User', ['', '']);
         $stmt->execute();
 
         $record = $stmt->fetch();
 
-        if ($record["username"] !== $username) {
+        if ($record->getUsername() !== $username) {
             return false;
         }
 
-        $user = new User();
-        $user->setId($record["id"]);
-        $user->setUsername($record["username"]);
-        $user->setPassword($record["password"]);
-
-        return $user;
+        return $record;
     }
 }

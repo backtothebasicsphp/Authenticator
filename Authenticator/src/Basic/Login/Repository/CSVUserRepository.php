@@ -30,10 +30,7 @@ class CSVUserRepository implements UserRepository
             return false;
         }
 
-        $user = new User();
-        $user->setId($record[0]);
-        $user->setUsername($record[1]);
-        $user->setPassword($record[2]);
+        $user = new User($record[1], $record[2], $record[0]);
 
         return $user;
     }
